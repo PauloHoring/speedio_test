@@ -2,12 +2,12 @@
 
 class UnipileService
   include HTTParty
-  base_uri 'https://api4.unipile.com:13450'
+  base_uri ENV['UNIPILE_API_URL']
 
   class << self
     def request_configuration_link(current_user)
       unipile_api_key = ENV['UNIPILE_API_KEY']
-      unipile_api_url = 'https://api4.unipile.com:13450'
+      unipile_api_url = ENV['UNIPILE_API_URL']
 
       response = HTTParty.post(
         "#{unipile_api_url}/api/v1/hosted/accounts/link",

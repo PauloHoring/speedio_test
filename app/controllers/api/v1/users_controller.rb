@@ -25,9 +25,9 @@ module Api
           user.update(otp_code: otp, otp_code_expires_at: Time.now + 5.minutes)
 
           render json: { message: 'OTP generated.', otp: otp }, status: :ok
-        else
-          render json: { error: 'User not found' }, status: :not_found
         end
+      rescue Mongoid::Errors::DocumentNotFound
+        render json: { error: 'Email not found. Please check your email or register if you are a new user.' }, status: :not_found
       end
 
       def auth
@@ -38,6 +38,8 @@ module Api
         else
           render json: { error: 'Invalid email or OTP' }, status: :unauthorized
         end
+      rescue Mongoid::Errors::DocumentNotFound
+        render json: { error: 'Email not found. Please check your email or register if you are a new user.' }, status: :not_found
       end
 
       def config
